@@ -3735,6 +3735,100 @@ body::before {
 
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* ========= Glow pulse for buttons ========= */
+  const glowButtons = document.querySelectorAll(
+    ".download-btn, .btn-start-install"
+  );
+
+  glowButtons.forEach(btn => {
+    btn.addEventListener("mouseenter", () => {
+      btn.style.boxShadow =
+        "0 0 25px rgba(208,138,69,.75), 0 0 60px rgba(208,138,69,.35)";
+    });
+
+    btn.addEventListener("mouseleave", () => {
+      btn.style.boxShadow =
+        "0 8px 25px rgba(208,138,69,.45)";
+    });
+
+    btn.addEventListener("mousedown", () => {
+      btn.style.transform = "scale(0.96)";
+    });
+
+    btn.addEventListener("mouseup", () => {
+      btn.style.transform = "scale(1)";
+    });
+  });
+
+  /* ========= Floating animation for cards ========= */
+  const cards = document.querySelectorAll(".game-card, .featured-game");
+
+  cards.forEach((card, i) => {
+    card.animate(
+      [
+        { transform: "translateY(0px)" },
+        { transform: "translateY(-6px)" },
+        { transform: "translateY(0px)" }
+      ],
+      {
+        duration: 4000 + i * 400,
+        iterations: Infinity,
+        easing: "ease-in-out"
+      }
+    );
+  });
+
+  /* ========= Ambient background glow movement ========= */
+  let glowX = 20;
+  let glowY = 30;
+  let dirX = 1;
+  let dirY = 1;
+
+  setInterval(() => {
+    glowX += dirX * 0.3;
+    glowY += dirY * 0.2;
+
+    if (glowX > 80 || glowX < 20) dirX *= -1;
+    if (glowY > 80 || glowY < 20) dirY *= -1;
+
+    document.body.style.setProperty(
+      "--ambient-glow",
+      `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(208,138,69,.18), transparent 45%)`
+    );
+  }, 60);
+
+  /* ========= Click spark effect ========= */
+  document.addEventListener("click", e => {
+    const spark = document.createElement("div");
+    spark.style.position = "fixed";
+    spark.style.left = e.clientX + "px";
+    spark.style.top = e.clientY + "px";
+    spark.style.width = "8px";
+    spark.style.height = "8px";
+    spark.style.borderRadius = "50%";
+    spark.style.pointerEvents = "none";
+    spark.style.background = "rgba(208,138,69,.9)";
+    spark.style.boxShadow =
+      "0 0 20px rgba(208,138,69,.9), 0 0 40px rgba(208,138,69,.5)";
+    spark.style.transform = "translate(-50%, -50%) scale(1)";
+    spark.style.transition = "all .6s ease-out";
+    spark.style.zIndex = "9999";
+
+    document.body.appendChild(spark);
+
+    requestAnimationFrame(() => {
+      spark.style.opacity = "0";
+      spark.style.transform = "translate(-50%, -50%) scale(3)";
+    });
+
+    setTimeout(() => spark.remove(), 600);
+  });
+
+});
+</script>
 
 
 </body></html>
